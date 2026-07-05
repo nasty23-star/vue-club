@@ -2,26 +2,413 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>База знаний</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База знаний / Knowledge Base</title>
     <style>
-        body { font-family: system-ui; max-width: 800px; margin: 40px auto; padding: 20px; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 10px 0; }
-        a { text-decoration: none; color: #2c7be5; font-size: 1.2rem; }
-        a:hover { text-decoration: underline; }
-        .desc { color: #666; font-size: 0.9rem; margin-left: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            max-width: 100%;
+            margin: 0;
+            padding: 40px 20px;
+            background: #ffffff;
+            color: #24292f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Заголовок */
+        .header {
+            border-bottom: 1px solid #d0d7de;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #24292f;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .h1-sub {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #57606a;
+            margin-left: 8px;
+        }
+
+        .subtitle {
+            color: #57606a;
+            font-size: 1rem;
+            margin-top: 4px;
+        }
+
+        /* Таблица на всю ширину */
+        .repo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #d0d7de;
+        }
+
+        .repo-table thead th {
+            background: #f6f8fa;
+            text-align: left;
+            padding: 14px 18px;
+            font-weight: 600;
+            color: #24292f;
+            border-bottom: 2px solid #d0d7de;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .repo-table tbody td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #d0d7de;
+            vertical-align: middle;
+        }
+
+        .repo-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .repo-table tbody tr:hover {
+            background: #f6f8fa;
+        }
+
+        /* Ссылки в таблице */
+        .repo-table a {
+            text-decoration: none;
+            color: #0969da;
+            font-weight: 500;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.15s;
+        }
+
+        .repo-table a:hover {
+            text-decoration: underline;
+            color: #0550ae;
+        }
+
+        .repo-table .link-sub {
+            display: block;
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: #57606a;
+            margin-top: 2px;
+        }
+
+        .repo-table .link-sub:hover {
+            text-decoration: none;
+        }
+
+        /* Бейджи / метки */
+        .badge {
+            display: inline-block;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            background: #f6f8fa;
+            color: #24292f;
+            border: 1px solid #d0d7de;
+            white-space: nowrap;
+        }
+
+        .badge-vue {
+            background: #41b883;
+            color: #fff;
+            border-color: #41b883;
+        }
+
+        .badge-js {
+            background: #f7df1e;
+            color: #24292f;
+            border-color: #f7df1e;
+        }
+
+        .badge-css {
+            background: #2965f1;
+            color: #fff;
+            border-color: #2965f1;
+        }
+
+        .badge-tools {
+            background: #ff6b6b;
+            color: #fff;
+            border-color: #ff6b6b;
+        }
+
+        .badge-frontend {
+            background: #9b59b6;
+            color: #fff;
+            border-color: #9b59b6;
+        }
+
+        /* Описание */
+        .desc {
+            color: #57606a;
+            font-size: 0.9rem;
+        }
+
+        .desc-en {
+            color: #8b949e;
+            font-size: 0.85rem;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Иконка папки */
+        .folder-icon {
+            font-size: 1.2rem;
+            margin-right: 4px;
+        }
+
+        /* Разделитель */
+        hr {
+            margin: 28px 0 20px;
+            border: none;
+            border-top: 1px solid #d0d7de;
+        }
+
+        /* Футер */
+        .footer {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #57606a;
+            font-size: 0.9rem;
+            padding: 6px 18px;
+            border-radius: 6px;
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            transition: all 0.15s;
+        }
+
+        .footer a:hover {
+            background: #f0f2f4;
+            color: #0969da;
+            border-color: #0969da;
+            text-decoration: none;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px 12px;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .h1-sub {
+                font-size: 1rem;
+                display: block;
+                margin-left: 0;
+            }
+
+            /* Превращаем таблицу в карточки на мобильных */
+            .repo-table thead {
+                display: none;
+            }
+
+            .repo-table tbody td {
+                display: block;
+                padding: 10px 14px;
+                border-bottom: none;
+            }
+
+            .repo-table tbody tr {
+                display: block;
+                margin-bottom: 12px;
+                border: 1px solid #d0d7de;
+                border-radius: 8px;
+                padding: 4px 0;
+                background: #ffffff;
+            }
+
+            .repo-table tbody tr:hover {
+                background: #f6f8fa;
+            }
+
+            .repo-table tbody td:first-child {
+                padding-top: 14px;
+                font-weight: 500;
+            }
+
+            .repo-table tbody td:last-child {
+                padding-bottom: 14px;
+            }
+
+            .repo-table a {
+                font-size: 1rem;
+            }
+
+            .repo-table .link-sub {
+                font-size: 0.8rem;
+            }
+
+            .badge {
+                font-size: 0.6rem;
+                padding: 1px 10px;
+            }
+
+            .desc {
+                font-size: 0.85rem;
+            }
+
+            .desc-en {
+                font-size: 0.8rem;
+            }
+
+            .footer {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .repo-table tbody td {
+                padding: 8px 12px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>💡 База знаний</h1>
-    <ul>
-        <li><a href="./frontend/">Frontend</a> <span class="desc">— архитектура, производительность</span></li>
-        <li><a href="./vue/">Vue.js</a> <span class="desc">— компоненты, состояние</span></li>
-        <li><a href="./js/">JavaScript</a> <span class="desc">— паттерны, асинхронность</span></li>
-        <li><a href="./css/">CSS</a> <span class="desc">— сетки, анимации</span></li>
-        <li><a href="./tools/">Tools</a> <span class="desc">— сборщики, линтеры</span></li>
-    </ul>
+
+<div class="container">
+
+    <!-- Заголовок -->
+    <div class="header">
+        <h1>
+            База знаний
+            <span class="h1-sub">/ Knowledge Base</span>
+        </h1>
+        <p class="subtitle">Структурированное хранилище материалов по веб-разработке / Structured repository of web development materials</p>
+    </div>
+
+    <!-- Таблица на всю ширину -->
+    <table class="repo-table">
+        <thead>
+            <tr>
+                <th style="width: 35%;">Раздел / Section</th>
+                <th style="width: 65%;">Описание / Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a href="./frontend/">
+                        Frontend
+                        <span class="link-sub">Frontend</span>
+                    </a>
+                </td>
+                <td>
+                    <span class="desc">Архитектура, производительность</span>
+                    <span class="desc-en">Architecture, performance</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="./vue/">
+                        Vue.js
+                        <span class="link-sub">Vue.js</span>
+                    </a>
+                </td>
+                <td>
+                    <span class="desc">Компоненты, управление состоянием, роутинг</span>
+                    <span class="desc-en">Components, state management, routing</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="./js/">
+                        JavaScript
+                        <span class="link-sub">JavaScript</span>
+                    </a>
+                </td>
+                <td>
+                    <span class="desc">Паттерны, асинхронность</span>
+                    <span class="desc-en">Patterns, asynchronous, ES6+</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="./css/">
+                        CSS
+                        <span class="link-sub">CSS</span>
+                    </a>
+                </td>
+                <td>
+                    <span class="desc">Сетки, анимации, методологии</span>
+                    <span class="desc-en">Grids, animations, methodologies</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="./tools/">
+                        Tools
+                        <span class="link-sub">Tools</span>
+                    </a>
+                </td>
+                <td>
+                    <span class="desc">Сборщики, линтеры, тестирование</span>
+                    <span class="desc-en">Bundlers, linters, testing</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
     <hr>
-    <p><a href="./README.md">📄 Открыть README.md</a></p>
+
+    <!-- Футер -->
+    <div class="footer">
+        <a href="./README.md">📄 README.md</a>
+    </div>
+
+</div>
+
 </body>
 </html>
