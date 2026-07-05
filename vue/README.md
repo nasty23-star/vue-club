@@ -23,10 +23,4 @@
 
 ---
 
-## 📌 Quick Navigation / Быстрая навигация
 
-| Category / Категория | Link / Ссылка |
-|----------------------|---------------|
-| 📖 Official Docs / Официальная документация | [vuejs.org](https://vuejs.org/) |
-| 🎓 Learning / Обучение | [Vue Mastery](https://www.vuemastery.com/) |
-| 🛠 Tools / Инструменты | [Vite](https://vitejs.dev/) |
